@@ -1,6 +1,4 @@
-require('dns').setServers(['8.8.8.8', '1.1.1.1'])
 require("dotenv").config()
-
 const express = require("express")
 const cors = require("cors")
 const morgan = require("morgan")
@@ -9,27 +7,27 @@ const connectDB = require("./data/db")
 
 const app = express()
 
-// Conexión a MongoDB Atlas
-connectDB()
-
-// Middlewares
+// Middleware
 app.use(cors())
 app.use(express.json())
 app.use(morgan("dev"))
 
-// Rutas
+// Routes
 app.use("/api/products", require("./routes/products.routes"))
 
-// Ruta 404
-app.use((req, res) => {
-  res.status(404).json({
-    message: "Ruta no encontrada"
-  })
+// Health check (IMPORTANTE PARA RAILWAY)
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" })
 })
 
-// PUERTO DINÁMICO (REQUISITO DEL CURSO)
-const PORT = process.env.PORT || 3000
+// Mongo connection protegida
+connectDB().catch(err => {
+  console.error("Mongo error:", err)
+})
+
+// PORT dinámico
+const PORT = process.env.PORT || 8080
 
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`)
+  console.log("Servidor corriendo en puerto", PORT)
 })
