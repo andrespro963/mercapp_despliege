@@ -52,13 +52,7 @@ const addToCart = () => {
 
   <br><br>
 
-<button
-  @click="$emit('delete-product', product.id)"
->
 
-  Eliminar
-
-</button>
 
 </RouterLink>
 

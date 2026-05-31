@@ -14,6 +14,7 @@ app.use(morgan("dev"))
 
 // Routes
 app.use("/api/products", require("./routes/products.routes"))
+app.use("/api/categories", require("./routes/categories.routes"))
 
 // Health check (IMPORTANTE PARA RAILWAY)
 app.get("/health", (req, res) => {

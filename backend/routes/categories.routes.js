@@ -1,54 +1,21 @@
 const router = require("express").Router()
-const Product = require("../models/Product")
+const Category = require("../models/Category")
 
-// GET TODOS
 router.get("/", async (req, res) => {
-  const products = await Product.find()
-  res.json(products)
+  const categories = await Category.find()
+  res.json(categories)
 })
 
-// GET POR ID
 router.get("/:id", async (req, res) => {
-  const product = await Product.findOne({ id: req.params.id })
-
-  if (!product) {
-    return res.status(404).json({ message: "Producto no encontrado" })
-  }
-
-  res.json(product)
+  const category = await Category.findOne({ id: req.params.id })
+  if (!category) return res.status(404).json({ message: "Categoría no encontrada" })
+  res.json(category)
 })
 
-// POST
 router.post("/", async (req, res) => {
-  const newProduct = new Product(req.body)
-  await newProduct.save()
-  res.status(201).json(newProduct)
-})
-
-// PUT
-router.put("/:id", async (req, res) => {
-  const product = await Product.findOneAndUpdate(
-    { id: req.params.id },
-    req.body,
-    { new: true }
-  )
-
-  if (!product) {
-    return res.status(404).json({ message: "Producto no encontrado" })
-  }
-
-  res.json(product)
-})
-
-// DELETE
-router.delete("/:id", async (req, res) => {
-  const product = await Product.findOneAndDelete({ id: req.params.id })
-
-  if (!product) {
-    return res.status(404).json({ message: "Producto no encontrado" })
-  }
-
-  res.json({ message: "Producto eliminado" })
+  const newCategory = new Category(req.body)
+  await newCategory.save()
+  res.status(201).json(newCategory)
 })
 
 module.exports = router
