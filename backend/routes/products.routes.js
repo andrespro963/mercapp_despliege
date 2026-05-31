@@ -1,84 +1,44 @@
-const express = require("express")
-const router = express.Router()
+const router = require("express").Router()
+const Product = require("../models/Product")
 
-const { products } = require("../data/db")
-
-router.get("/", (req, res) => {
-  res.json(products)
+router.get("/", async (req, res) => {
+  try {
+    const products = await Product.find()
+    res.json(products)
+  } catch (error) {
+    res.status(500).json({ message: "Error servidor" })
+  }
 })
 
-router.get("/:id", (req, res) => {
-
-  const id = parseInt(req.params.id)
-
-  const product = products.find(p => p.id === id)
+router.get("/:id", async (req, res) => {
+  const product = await Product.findOne({ id: req.params.id })
 
   if (!product) {
-    return res.status(404).json({
-      message: "Producto no encontrado"
-    })
+    return res.status(404).json({ message: "No encontrado" })
   }
 
   res.json(product)
 })
 
-// POST
-router.post("/", (req, res) => {
-
-  const newProduct = req.body
-
-  if (!newProduct.name || !newProduct.price) {
-    return res.status(400).json({
-      message: "Nombre y precio son obligatorios"
-    })
-  }
-
-  newProduct.id = products.length + 1
-
-  products.push(newProduct)
-
+router.post("/", async (req, res) => {
+  const newProduct = new Product(req.body)
+  await newProduct.save()
   res.status(201).json(newProduct)
 })
 
-// PUT
-router.put("/:id", (req, res) => {
+router.put("/:id", async (req, res) => {
+  const product = await Product.findOneAndUpdate(
+    { id: req.params.id },
+    req.body,
+    { new: true }
+  )
 
-  const id = parseInt(req.params.id)
-
-  const index = products.findIndex(p => p.id === id)
-
-  if (index === -1) {
-    return res.status(404).json({
-      message: "Producto no encontrado"
-    })
-  }
-
-  products[index] = {
-    ...products[index],
-    ...req.body
-  }
-
-  res.json(products[index])
+  res.json(product)
 })
 
-// DELETE
-router.delete("/:id", (req, res) => {
-
-  const id = parseInt(req.params.id)
-
-  const index = products.findIndex(p => p.id === id)
-
-  if (index === -1) {
-    return res.status(404).json({
-      message: "Producto no encontrado"
-    })
-  }
-
-  products.splice(index, 1)
-
-  res.json({
-    message: "Producto eliminado"
-  })
+router.delete("/:id", async (req, res) => {
+  await Product.findOneAndDelete({ id: req.params.id })
+  res.json({ message: "Eliminado" })
 })
 
 module.exports = router
