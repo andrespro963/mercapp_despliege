@@ -1,3 +1,7 @@
+const API_URL = import.meta.env.VITE_API_URL
+
+fetch(`${API_URL}/api/categories`)
+
 import { ref, onMounted } from "vue"
 
 export function useCategories() {
