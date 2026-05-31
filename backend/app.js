@@ -16,6 +16,12 @@ app.use(morgan("dev"))
 app.use("/api/products", require("./routes/products.routes"))
 app.use("/api/categories", require("./routes/categories.routes"))
 
+app.get("/", (req, res) => {
+  res.json({
+    message: "API Mercapp funcionando 🚀"
+  })
+})
+
 // Health check (IMPORTANTE PARA RAILWAY)
 app.get("/health", (req, res) => {
   res.json({ status: "ok" })
