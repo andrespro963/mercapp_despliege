@@ -5,19 +5,15 @@ export function useProducts() {
   const loading = ref(false)
   const error = ref(null)
 
-  const API_URL = import.meta.env.VITE_API_URL
-
   const fetchProducts = async () => {
     loading.value = true
 
     try {
+      const API_URL = import.meta.env.VITE_API_URL
+
       const response = await fetch(
         `${API_URL}/api/products`
       )
-
-      if (!response.ok) {
-        throw new Error("No se pudieron cargar los productos")
-      }
 
       products.value = await response.json()
 
