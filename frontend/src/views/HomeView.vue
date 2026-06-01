@@ -89,7 +89,10 @@ const filteredProducts = computed(() => {
 
 <template>
 
+  <div class="hero">
   <h1>MercApp</h1>
+  <p>Tu tienda online moderna</p>
+  </div>
 
   <h2>
     Carrito: {{ cart.length }}
