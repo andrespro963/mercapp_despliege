@@ -5,6 +5,7 @@ export function useProducts() {
   const loading = ref(false)
   const error = ref(null)
 
+  console.log("API:", import.meta.env.VITE_API_URL)
   const fetchProducts = async () => {
     loading.value = true
 
