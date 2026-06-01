@@ -7,23 +7,17 @@ export function useProducts() {
 
   const fetchProducts = async () => {
     loading.value = true
-    error.value = null
 
     try {
       const API_URL = import.meta.env.VITE_API_URL
 
-      console.log("API:", API_URL)
-
-      const response = await fetch(`${API_URL}/api/products`)
-
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}`)
-      }
+      const response = await fetch(
+        `${API_URL}/api/products`
+      )
 
       products.value = await response.json()
 
     } catch (err) {
-      console.error(err)
       error.value = err.message
 
     } finally {

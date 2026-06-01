@@ -66,7 +66,7 @@ const saveProduct = async () => {
     const response =
       await fetch(
 
-        "http://localhost:3000/api/products",
+        `${API_URL}/api/products`,
 
         {
 
